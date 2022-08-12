@@ -2,11 +2,16 @@ import * as S from "./Button.styles";
 
 type ButtonProps = {
   children: React.ReactNode;
-  onClick?: (ev: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  selected?: boolean;
+  hidden?: boolean;
+  onClick?: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
-const Button = ({ children, onClick }: ButtonProps) => {
+const Button = ({ children, selected, hidden, onClick }: ButtonProps) => {
   return (
     <S.Button
+      role="button"
+      selected={selected}
+      hidden={hidden}
       onClick={(ev) => {
         if (onClick) {
           onClick(ev);
