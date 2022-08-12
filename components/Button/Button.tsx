@@ -13,7 +13,7 @@ const Button = ({ children, onClick }: ButtonProps) => {
         }
       }}
     >
-      <h2>{children}</h2>
+      {children}
     </S.Button>
   );
 };
