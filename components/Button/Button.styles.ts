@@ -12,6 +12,11 @@ const stretchAnim = css`
 
   animation: stretch 1.5s ease-in-out;
   animation-fill-mode: forwards;
+
+  &:hover {
+    background-color: white;
+    transition: 0.3s;
+  }
 `;
 
 const shrinkAnim = css`
@@ -31,10 +36,12 @@ const shrinkAnim = css`
 const hideAnim = css`
   @keyframes hide {
     0% {
+      padding-top: 20px;
       height: 56px;
       visibility: hidden;
     }
     100% {
+      padding-top: 0px;
       height: 0px;
       visibility: hidden;
     }
@@ -42,13 +49,6 @@ const hideAnim = css`
 
   animation: hide 1.5s ease-in-out;
   animation-fill-mode: forwards;
-`;
-
-const hiddenOld = css`
-  height: 0;
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s, opacity 0.5s linear, height 0.9s;
 `;
 
 export const Button = styled.div<{
@@ -63,7 +63,7 @@ export const Button = styled.div<{
   border-radius: 14px;
   display: flex;
   gap: 10px;
-  align-items: center;
+  padding-top: 20px;
   padding-left: 20px;
   transition: 0.3s;
 
