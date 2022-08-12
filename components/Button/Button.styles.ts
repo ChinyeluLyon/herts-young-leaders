@@ -1,27 +1,54 @@
 import styled, { css } from "styled-components";
 
-const stretch = css`
+const stretchAnim = css`
   @keyframes stretch {
     0% {
       height: 56px;
     }
     100% {
-      height: 300px;
+      height: 600px;
     }
   }
+
+  animation: stretch 1.5s ease-in-out;
+  animation-fill-mode: forwards;
 `;
 
-const hidden = css`
+const shrinkAnim = css`
+  @keyframes shrink {
+    0% {
+      height: 600px;
+    }
+    100% {
+      height: 56px;
+    }
+  }
+
+  animation: shrink 1.5s ease-in-out;
+  animation-fill-mode: forwards;
+`;
+
+const hideAnim = css`
+  @keyframes hide {
+    0% {
+      height: 56px;
+      visibility: hidden;
+    }
+    100% {
+      height: 0px;
+      visibility: hidden;
+    }
+  }
+
+  animation: hide 1.5s ease-in-out;
+  animation-fill-mode: forwards;
+`;
+
+const hiddenOld = css`
   height: 0;
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.5s linear, height 0.9s;
-`;
-
-const selected = css`
-  ${stretch};
-  animation: stretch 1.5s ease-in-out;
-  animation-fill-mode: forwards;
 `;
 
 export const Button = styled.div<{
@@ -40,8 +67,8 @@ export const Button = styled.div<{
   padding-left: 20px;
   transition: 0.3s;
 
-  ${(p) => p.selected && selected}
-  ${(p) => p.hidden && hidden}
+  ${(p) => (p.selected && !p.hidden ? stretchAnim : shrinkAnim)};
+  ${(p) => p.hidden && hideAnim};
 
   &:hover {
     cursor: pointer;
