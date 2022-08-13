@@ -1,6 +1,7 @@
 import * as S from "./Home.styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faChevronCircleDown,
   faGlasses,
   faGlobe,
   faPlus,
@@ -8,80 +9,113 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/Button/Button";
 import { useState } from "react";
+import {
+  Accordion,
+  AccordionDetails,
+  Typography,
+  Divider,
+} from "@mui/material";
+
+import HoneIn from "../HoneIn/HoneIn";
 
 const HomeModule = () => {
-  const [selected, setSelected] = useState([false, false, false, false]);
-  const [hidden, setHidden] = useState([false, false, false, false]);
+  const [expanded, setExpanded] = useState<string | false>(false);
+
+  const handleChange =
+    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false);
+    };
 
   return (
     <S.HomeWrapper>
       <h1>Herts Young Leaders</h1>
-      <S.ButtonWrapper>
-        <Button
-          selected={selected[0]}
-          hidden={hidden[0]}
-          onClick={(ev) => {
-            if (!selected[0]) {
-              setSelected([true, false, false, false]);
-              setHidden([false, true, true, true]);
-            } else {
-              setHidden([false, false, false, false]);
-              setSelected([false, false, false, false]);
-            }
-          }}
+
+      <Accordion
+        expanded={expanded === "panel1"}
+        onChange={handleChange("panel1")}
+      >
+        <S.AccordionHeader
+          isOpen={expanded === "panel1"}
+          expandIcon={<FontAwesomeIcon icon={faChevronCircleDown} />}
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
         >
-          <FontAwesomeIcon icon={faGlasses} />
-          Hone in
-        </Button>
-        <Button
-          selected={selected[1]}
-          hidden={hidden[1]}
-          onClick={(ev) => {
-            if (!selected[1]) {
-              setSelected([false, true, false, false]);
-              setHidden([true, false, true, true]);
-            } else {
-              setHidden([false, false, false, false]);
-              setSelected([false, false, false, false]);
-            }
-          }}
+          <S.GroupHeader>
+            <FontAwesomeIcon icon={faGlasses} size="2x" />
+            <h2>Hone in</h2>
+          </S.GroupHeader>
+        </S.AccordionHeader>
+        <AccordionDetails>
+          <HoneIn />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        expanded={expanded === "panel2"}
+        onChange={handleChange("panel2")}
+      >
+        <S.AccordionHeader
+          isOpen={expanded === "panel2"}
+          expandIcon={<FontAwesomeIcon icon={faChevronCircleDown} />}
+          aria-controls="panel2bh-content"
+          id="panel2bh-header"
         >
-          <FontAwesomeIcon icon={faPuzzlePiece} />
-          All Sessions
-        </Button>
-        <Button
-          selected={selected[2]}
-          hidden={hidden[2]}
-          onClick={(ev) => {
-            if (!selected[2]) {
-              setHidden([true, true, false, true]);
-              setSelected([false, false, true, false]);
-            } else {
-              setHidden([false, false, false, false]);
-              setSelected([false, false, false, false]);
-            }
-          }}
+          <S.GroupHeader>
+            <FontAwesomeIcon icon={faPuzzlePiece} size="2x" />
+            <h2>All Sessions</h2>
+          </S.GroupHeader>
+        </S.AccordionHeader>
+        <AccordionDetails>
+          <Typography>
+            Donec placerat, lectus sed mattis semper, neque lectus feugiat
+            lectus, varius pulvinar diam eros in elit. Pellentesque convallis
+            laoreet laoreet.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        expanded={expanded === "panel3"}
+        onChange={handleChange("panel3")}
+      >
+        <S.AccordionHeader
+          isOpen={expanded === "panel3"}
+          expandIcon={<FontAwesomeIcon icon={faChevronCircleDown} />}
+          aria-controls="panel3bh-content"
+          id="panel3bh-header"
         >
-          <FontAwesomeIcon icon={faPlus} />
-          Record Data
-        </Button>
-        <Button
-          selected={selected[3]}
-          hidden={hidden[3]}
-          onClick={(ev) => {
-            if (!selected[3]) {
-              setHidden([true, true, true, false]);
-              setSelected([false, false, false, true]);
-            } else {
-              setHidden([false, false, false, false]);
-              setSelected([false, false, false, false]);
-            }
-          }}
+          <S.GroupHeader>
+            <FontAwesomeIcon icon={faPlus} size="2x" />
+            <h2>Record Data</h2>
+          </S.GroupHeader>
+        </S.AccordionHeader>
+        <AccordionDetails>
+          <Typography>
+            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer
+            sit amet egestas eros, vitae egestas augue. Duis vel est augue.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        expanded={expanded === "panel4"}
+        onChange={handleChange("panel4")}
+      >
+        <S.AccordionHeader
+          isOpen={expanded === "panel4"}
+          expandIcon={<FontAwesomeIcon icon={faChevronCircleDown} />}
+          aria-controls="panel4bh-content"
+          id="panel4bh-header"
         >
-          <FontAwesomeIcon icon={faGlobe} />
-          Our site
-        </Button>
-      </S.ButtonWrapper>
+          <S.GroupHeader>
+            <FontAwesomeIcon icon={faGlobe} size="2x" />
+            <h2>Our site</h2>
+          </S.GroupHeader>
+        </S.AccordionHeader>
+        <AccordionDetails>
+          <Typography>
+            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer
+            sit amet egestas eros, vitae egestas augue. Duis vel est augue.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
     </S.HomeWrapper>
   );
 };
