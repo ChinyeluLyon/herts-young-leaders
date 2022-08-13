@@ -25,8 +25,8 @@ const openStyle = css`
 `;
 
 export const AccordionHeader = styled(AccordionSummary)<{
-  isOpen: boolean;
+  $isOpen: boolean;
 }>`
   color: #747474;
-  ${(p) => p.isOpen && openStyle}
+  ${(p) => p.$isOpen && openStyle}
 `;

@@ -7,16 +7,17 @@ import {
   faPlus,
   faPuzzlePiece,
 } from "@fortawesome/free-solid-svg-icons";
-import Button from "../../components/Button/Button";
 import { useState } from "react";
 import {
   Accordion,
   AccordionDetails,
   Typography,
   Divider,
+  Button,
 } from "@mui/material";
 
 import HoneIn from "../HoneIn/HoneIn";
+import RecordData from "../RecordData/RecordData";
 
 const HomeModule = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
@@ -35,7 +36,7 @@ const HomeModule = () => {
         onChange={handleChange("panel1")}
       >
         <S.AccordionHeader
-          isOpen={expanded === "panel1"}
+          $isOpen={expanded === "panel1"}
           expandIcon={<FontAwesomeIcon icon={faChevronCircleDown} />}
           aria-controls="panel1bh-content"
           id="panel1bh-header"
@@ -54,7 +55,7 @@ const HomeModule = () => {
         onChange={handleChange("panel2")}
       >
         <S.AccordionHeader
-          isOpen={expanded === "panel2"}
+          $isOpen={expanded === "panel2"}
           expandIcon={<FontAwesomeIcon icon={faChevronCircleDown} />}
           aria-controls="panel2bh-content"
           id="panel2bh-header"
@@ -77,7 +78,7 @@ const HomeModule = () => {
         onChange={handleChange("panel3")}
       >
         <S.AccordionHeader
-          isOpen={expanded === "panel3"}
+          $isOpen={expanded === "panel3"}
           expandIcon={<FontAwesomeIcon icon={faChevronCircleDown} />}
           aria-controls="panel3bh-content"
           id="panel3bh-header"
@@ -88,10 +89,7 @@ const HomeModule = () => {
           </S.GroupHeader>
         </S.AccordionHeader>
         <AccordionDetails>
-          <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer
-            sit amet egestas eros, vitae egestas augue. Duis vel est augue.
-          </Typography>
+          <RecordData />
         </AccordionDetails>
       </Accordion>
       <Accordion
@@ -99,7 +97,7 @@ const HomeModule = () => {
         onChange={handleChange("panel4")}
       >
         <S.AccordionHeader
-          isOpen={expanded === "panel4"}
+          $isOpen={expanded === "panel4"}
           expandIcon={<FontAwesomeIcon icon={faChevronCircleDown} />}
           aria-controls="panel4bh-content"
           id="panel4bh-header"
@@ -111,8 +109,9 @@ const HomeModule = () => {
         </S.AccordionHeader>
         <AccordionDetails>
           <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer
-            sit amet egestas eros, vitae egestas augue. Duis vel est augue.
+            <a href="https://hertsyl.org.uk/" target="blank">
+              <Button>Click here to check out our site</Button>
+            </a>
           </Typography>
         </AccordionDetails>
       </Accordion>
