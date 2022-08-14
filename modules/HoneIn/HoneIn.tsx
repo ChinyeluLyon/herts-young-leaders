@@ -9,19 +9,19 @@ const HoneIn = () => {
       <S.SearchBlock>
         <h3>Search by:</h3>
         <S.MinMaxRow>
-          <p>Age:</p>
-          <Input placeholder="Min" />
-          <Input placeholder="Max" />
+          <S.InputLabel>Age:</S.InputLabel>
+          <S.Input type="number" min={2} max={15} placeholder="Min" />
+          <S.Input type="number" min={2} max={15} placeholder="Max" />
         </S.MinMaxRow>
         <S.MinMaxRow>
-          <p>AM:</p>
-          <Input placeholder="Min" />
-          <Input placeholder="Max" />
+          <S.InputLabel>AM:</S.InputLabel>
+          <S.Input type="number" min={0} max={5} placeholder="Min" />
+          <S.Input type="number" min={0} max={5} placeholder="Max" />
         </S.MinMaxRow>
         <S.MinMaxRow>
-          <p>PM:</p>
-          <Input placeholder="Min" />
-          <Input placeholder="Max" />
+          <S.InputLabel>PM:</S.InputLabel>
+          <S.Input type="number" min={0} max={5} placeholder="Min" />
+          <S.Input type="number" min={0} max={5} placeholder="Max" />
         </S.MinMaxRow>
       </S.SearchBlock>
 
