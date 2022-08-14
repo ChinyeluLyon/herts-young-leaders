@@ -21,22 +21,20 @@ const UserTable = () => {
 
   const rows = [
     {
-      name: "Frozen yoghurt",
-      calories: 159,
-      fat: 6.0,
-      carbs: 24,
-      protein: 4.0,
+      name: "Scott",
+      age: 10,
+      am: 3.5,
+      pm: 4.5,
     },
     {
-      name: "Ice cream sandwich",
-      calories: 237,
-      fat: 9.0,
-      carbs: 37,
-      protein: 4.3,
+      name: "Bobby",
+      age: 9,
+      am: 3.5,
+      pm: 4.5,
     },
-    { name: "Eclair", calories: 262, fat: 16.0, carbs: 24, protein: 6.0 },
-    { name: "Cupcake", calories: 305, fat: 3.7, carbs: 67, protein: 4.3 },
-    { name: "Gingerbread", calories: 356, fat: 16.0, carbs: 49, protein: 3.9 },
+    { name: "Logan", age: 10, am: 3.5, pm: 4.5 },
+    { name: "Xavier", age: 7, am: 3.5, pm: 4.5 },
+    { name: "Jean", age: 10, am: 3.5, pm: 4.5 },
   ];
 
   return (
@@ -44,11 +42,11 @@ const UserTable = () => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell>Session 1</TableCell>
+            <TableCell align="right">Name</TableCell>
+            <TableCell align="right">Age</TableCell>
+            <TableCell align="right">AM</TableCell>
+            <TableCell align="right">PM</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -60,10 +58,9 @@ const UserTable = () => {
               <TableCell component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              <TableCell align="right">{row.age}</TableCell>
+              <TableCell align="right">{row.am}</TableCell>
+              <TableCell align="right">{row.pm}</TableCell>
             </TableRow>
           ))}
         </TableBody>

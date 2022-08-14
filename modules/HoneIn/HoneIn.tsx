@@ -1,4 +1,5 @@
 import { Button, Input } from "@mui/material";
+import Export from "../Export/Export";
 import UserTable from "../UserTable/UserTable";
 import * as S from "./HoneIn.styles";
 
@@ -28,6 +29,7 @@ const HoneIn = () => {
       <Button>Search</Button>
 
       <UserTable />
+      <Export />
     </S.HoneIn>
   );
 };

@@ -59,6 +59,7 @@ const RecordData = () => {
         min={0}
         max={5}
         onChange={(ev) => {
+          //@ts-ignore
           setCurrentRating(ev.target.value);
         }}
       />
@@ -71,6 +72,7 @@ const RecordData = () => {
       />
 
       <Button>Save</Button>
+      
     </div>
   );
 };

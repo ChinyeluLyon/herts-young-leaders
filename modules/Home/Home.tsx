@@ -18,6 +18,7 @@ import {
 
 import HoneIn from "../HoneIn/HoneIn";
 import RecordData from "../RecordData/RecordData";
+import AllSessions from "../AllSessions/AllSessions";
 
 const HomeModule = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
@@ -66,11 +67,7 @@ const HomeModule = () => {
           </S.GroupHeader>
         </S.AccordionHeader>
         <AccordionDetails>
-          <Typography>
-            Donec placerat, lectus sed mattis semper, neque lectus feugiat
-            lectus, varius pulvinar diam eros in elit. Pellentesque convallis
-            laoreet laoreet.
-          </Typography>
+          <AllSessions />
         </AccordionDetails>
       </Accordion>
       <Accordion
