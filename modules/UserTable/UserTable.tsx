@@ -39,14 +39,13 @@ const UserTable = () => {
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 250 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Session 1</TableCell>
-            <TableCell align="right">Name</TableCell>
-            <TableCell align="right">Age</TableCell>
-            <TableCell align="right">AM</TableCell>
-            <TableCell align="right">PM</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Age</TableCell>
+            <TableCell>AM</TableCell>
+            <TableCell>PM</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -58,9 +57,9 @@ const UserTable = () => {
               <TableCell component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="right">{row.age}</TableCell>
-              <TableCell align="right">{row.am}</TableCell>
-              <TableCell align="right">{row.pm}</TableCell>
+              <TableCell>{row.age}</TableCell>
+              <TableCell>{row.am}</TableCell>
+              <TableCell>{row.pm}</TableCell>
             </TableRow>
           ))}
         </TableBody>
