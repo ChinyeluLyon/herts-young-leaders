@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "node ./api/server.js",
     "dev_old": "next dev",
-    "start": "next start",
+    "start": "NODE_ENV=production node ./api/server.js",
+    "start_old": "next start",
     "build": "next build",
     "lint": "next lint"
   },
