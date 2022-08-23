@@ -6,7 +6,7 @@ const express = require("express");
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
-const port = 3000;
+const port = process.env.PORT || 3000;
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
@@ -22,15 +22,15 @@ console.log("process.env.HOST: ", process.env.DB_HOST);
 console.log("process.env.USER: ", process.env.DB_USER);
 console.log("process.env.PASSWORD: ", process.env.DB_PASSWORD);
 console.log("process.env.DB: ", process.env.DB);
-console.log("process.env.PORT: ", process.env.DB_PORT);
+console.log("process.env.DB_PORT: ", process.env.DB_PORT);
 console.log("\n");
 
 const connection = mysql.createConnection({
-  host: process.env.HOST,
-  user: process.env.USER,
-  password: process.env.PASSWORD,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
   database: process.env.DB,
-  port: process.env.PORT,
+  port: process.env.DB_PORT,
 });
 
 connection.connect();
