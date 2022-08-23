@@ -3,7 +3,11 @@ import Export from "../Export/Export";
 import UserTable from "../UserTable/UserTable";
 import * as S from "./HoneIn.styles";
 
-const HoneIn = () => {
+type HoneInProps = {
+  isOpen: boolean;
+};
+
+const HoneIn = ({ isOpen }: HoneInProps) => {
   return (
     <S.HoneIn>
       <S.SearchBlock>
@@ -28,7 +32,7 @@ const HoneIn = () => {
       <Input placeholder="By Name" />
       <Button>Search</Button>
 
-      <UserTable />
+      <UserTable isOpen={isOpen} />
       <Export />
     </S.HoneIn>
   );

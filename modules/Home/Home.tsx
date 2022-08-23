@@ -48,7 +48,7 @@ const HomeModule = () => {
           </S.GroupHeader>
         </S.AccordionHeader>
         <AccordionDetails>
-          <HoneIn />
+          <HoneIn isOpen={expanded === "panel1"} />
         </AccordionDetails>
       </Accordion>
       <Accordion

@@ -7,9 +7,14 @@ import {
   TableCell,
   TableBody,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 import useGetUsers from "../../frontendApi/useGetUsers";
 
-const UserTable = () => {
+type UserTableProps = {
+  isOpen: boolean;
+};
+
+const UserTable = ({ isOpen }: UserTableProps) => {
   const createData = (
     name: string,
     calories: number,
@@ -20,8 +25,18 @@ const UserTable = () => {
     return { name, calories, fat, carbs, protein };
   };
 
-  const data = useGetUsers();
-  console.log(data);
+  const { refetch } = useGetUsers();
+  const [userData, setUserData] = useState<Record<string, any>>();
+
+  useEffect(() => {
+    const getData = async () => {
+      const { data } = await refetch();
+      setUserData(data);
+    };
+    if (isOpen) {
+      getData();
+    }
+  }, [isOpen]);
 
   const rows = [
     {
