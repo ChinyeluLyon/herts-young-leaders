@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import Export from "../Export/Export";
-import UserTable from "../UserTable/UserTable";
+import ParticipantTable from "../ParticipantTable/ParticipantTable";
 
 const AllSessions = () => {
   return (
@@ -9,8 +9,8 @@ const AllSessions = () => {
         <Button>Previous</Button>
         <Button>Next</Button>
       </div>
-      <UserTable />
-      <Export/>
+      <ParticipantTable isOpen />
+      <Export />
     </div>
   );
 };

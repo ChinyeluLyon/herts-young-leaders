@@ -10,11 +10,11 @@ import {
 import { useEffect, useState } from "react";
 import useGetUsers from "../../frontendApi/useGetUsers";
 
-type UserTableProps = {
+type ParticipantTableProps = {
   isOpen: boolean;
 };
 
-const UserTable = ({ isOpen }: UserTableProps) => {
+const ParticipantTable = ({ isOpen }: ParticipantTableProps) => {
   const createData = (
     name: string,
     calories: number,
@@ -26,7 +26,7 @@ const UserTable = ({ isOpen }: UserTableProps) => {
   };
 
   const { refetch } = useGetUsers();
-  const [userData, setUserData] = useState<Record<string, any>>();
+  const [userData, setUserData] = useState<Array<User>>();
 
   useEffect(() => {
     const getData = async () => {
@@ -36,25 +36,7 @@ const UserTable = ({ isOpen }: UserTableProps) => {
     if (isOpen) {
       getData();
     }
-  }, [isOpen]);
-
-  const rows = [
-    {
-      name: "Scott",
-      age: 10,
-      am: 3.5,
-      pm: 4.5,
-    },
-    {
-      name: "Bobby",
-      age: 9,
-      am: 3.5,
-      pm: 4.5,
-    },
-    { name: "Logan", age: 10, am: 3.5, pm: 4.5 },
-    { name: "Xavier", age: 7, am: 3.5, pm: 4.5 },
-    { name: "Jean", age: 10, am: 3.5, pm: 4.5 },
-  ];
+  }, [isOpen, refetch]);
 
   return (
     <TableContainer component={Paper}>
@@ -68,7 +50,7 @@ const UserTable = ({ isOpen }: UserTableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {userData?.map((row) => (
             <TableRow
               key={row.name}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -87,4 +69,4 @@ const UserTable = ({ isOpen }: UserTableProps) => {
   );
 };
 
-export default UserTable;
+export default ParticipantTable;

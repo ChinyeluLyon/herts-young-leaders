@@ -1,6 +1,6 @@
 import { Button, Input } from "@mui/material";
 import Export from "../Export/Export";
-import UserTable from "../UserTable/UserTable";
+import ParticipantTable from "../ParticipantTable/ParticipantTable";
 import * as S from "./HoneIn.styles";
 
 type HoneInProps = {
@@ -32,7 +32,7 @@ const HoneIn = ({ isOpen }: HoneInProps) => {
       <Input placeholder="By Name" />
       <Button>Search</Button>
 
-      <UserTable isOpen={isOpen} />
+      <ParticipantTable isOpen={isOpen} />
       <Export />
     </S.HoneIn>
   );
