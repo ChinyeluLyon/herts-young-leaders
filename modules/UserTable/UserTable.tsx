@@ -7,6 +7,7 @@ import {
   TableCell,
   TableBody,
 } from "@mui/material";
+import useGetUsers from "../../frontendApi/useGetUsers";
 
 const UserTable = () => {
   const createData = (
@@ -18,6 +19,9 @@ const UserTable = () => {
   ) => {
     return { name, calories, fat, carbs, protein };
   };
+
+  const data = useGetUsers();
+  console.log(data);
 
   const rows = [
     {
