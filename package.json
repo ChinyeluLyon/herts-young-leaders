@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "node ./api/server.js",
-    "start": "NODE_ENV=production && node ./api/server.js",
-    "dev old": "next dev",
-    "start old": "next start",
+    "start": "npm run build && node ./api/server.js",
+    "dev_old": "next dev",
+    "start_old": "next start",
     "build": "next build",
     "lint": "next lint"
   },

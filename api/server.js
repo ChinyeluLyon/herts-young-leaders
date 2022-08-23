@@ -18,11 +18,11 @@ if (dev) {
 
 console.log("\ndev: ", dev);
 console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
-console.log("process.env.HOST: ", process.env.HOST);
-console.log("process.env.USER: ", process.env.USER);
-console.log("process.env.PASSWORD: ", process.env.PASSWORD);
+console.log("process.env.HOST: ", process.env.DB_HOST);
+console.log("process.env.USER: ", process.env.DB_USER);
+console.log("process.env.PASSWORD: ", process.env.DB_PASSWORD);
 console.log("process.env.DB: ", process.env.DB);
-console.log("process.env.PORT: ", process.env.PORT);
+console.log("process.env.PORT: ", process.env.DB_PORT);
 console.log("\n");
 
 const connection = mysql.createConnection({
