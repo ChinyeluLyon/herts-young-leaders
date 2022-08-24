@@ -1,6 +1,4 @@
 // server.js
-const { createServer } = require("http");
-const { parse } = require("url");
 const next = require("next");
 const express = require("express");
 
@@ -35,14 +33,6 @@ const pool = mysql.createPool({
   debug: false,
 });
 
-// connection.connect((err) => {
-//   if (err) {
-//     console.error(err);
-//     throw err;
-//   }
-//   console.log("Connected to MySQL Server!");
-// });
-
 app.prepare().then(() => {
   const server = express();
   server.use(express.static("_next"));
@@ -55,24 +45,8 @@ app.prepare().then(() => {
         console.error(err);
         return;
       }
-      // rows fetch
-      console.log(data);
       res.json(data);
     });
-
-    // connection.query("SELECT * FROM participants;", (err, rows, fields) => {
-    //   if (err) {
-    //     res.send(err);
-    //     throw err;
-    //   }
-
-    //   console.log("rows: ", rows);
-    //   res.json(rows);
-    // });
-  });
-
-  server.get("/test-api", (req, res) => {
-    res.send("API HIT");
   });
 
   server.all("*", (req, res) => handle(req, res));
