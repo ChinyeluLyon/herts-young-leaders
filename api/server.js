@@ -42,13 +42,16 @@ app.prepare().then(() => {
   server.all("/_next/*", (req, res) => handle(req, res));
 
   server.get("/users", (req, res) => {
-    // res.json({ x: "Hello World!" });
     connection.query("SELECT * FROM participants;", (err, rows, fields) => {
       if (err) throw err;
 
       console.log("rows: ", rows);
       res.json(rows);
     });
+  });
+
+  server.get("/test-api", (req, res) => {
+    res.send("API HIT");
   });
 
   server.all("*", (req, res) => handle(req, res));
