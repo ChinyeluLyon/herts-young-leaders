@@ -25,15 +25,23 @@ console.log("process.env.DB: ", process.env.DB);
 console.log("process.env.DB_PORT: ", process.env.DB_PORT);
 console.log("\n");
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
+  connectionLimit: 100, //important
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB,
   port: process.env.DB_PORT,
+  debug: false,
 });
 
-connection.connect();
+// connection.connect((err) => {
+//   if (err) {
+//     console.error(err);
+//     throw err;
+//   }
+//   console.log("Connected to MySQL Server!");
+// });
 
 app.prepare().then(() => {
   const server = express();
@@ -42,15 +50,25 @@ app.prepare().then(() => {
   server.all("/_next/*", (req, res) => handle(req, res));
 
   server.get("/users", (req, res) => {
-    connection.query("SELECT * FROM participants;", (err, rows, fields) => {
+    pool.query("SELECT * FROM participants", (err, data) => {
       if (err) {
-        res.send(err);
-        throw err;
+        console.error(err);
+        return;
       }
-
-      console.log("rows: ", rows);
-      res.json(rows);
+      // rows fetch
+      console.log(data);
+      res.json(data);
     });
+
+    // connection.query("SELECT * FROM participants;", (err, rows, fields) => {
+    //   if (err) {
+    //     res.send(err);
+    //     throw err;
+    //   }
+
+    //   console.log("rows: ", rows);
+    //   res.json(rows);
+    // });
   });
 
   server.get("/test-api", (req, res) => {
