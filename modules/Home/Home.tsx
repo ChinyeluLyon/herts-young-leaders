@@ -67,7 +67,7 @@ const HomeModule = () => {
           </S.GroupHeader>
         </S.AccordionHeader>
         <AccordionDetails>
-          <AllSessions />
+          <AllSessions isOpen={expanded === "panel2"} />
         </AccordionDetails>
       </Accordion>
       <Accordion

@@ -43,7 +43,10 @@ app.prepare().then(() => {
 
   server.get("/users", (req, res) => {
     connection.query("SELECT * FROM participants;", (err, rows, fields) => {
-      if (err) throw err;
+      if (err) {
+        res.send(err);
+        throw err;
+      }
 
       console.log("rows: ", rows);
       res.json(rows);
