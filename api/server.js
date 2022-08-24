@@ -39,14 +39,40 @@ app.prepare().then(() => {
   server.use(express.static("../pages"));
   server.all("/_next/*", (req, res) => handle(req, res));
 
-  server.get("/users", (req, res) => {
-    pool.query("SELECT * FROM participants", (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
+  server.get("/users/:id", (req, res) => {
+    pool.query(
+      `Select * from participants where id = ${req.params?.id}`,
+      (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        res.json(data);
       }
-      res.json(data);
-    });
+    );
+  });
+
+  server.get("/users", (req, res) => {
+    if (req.query?.name) {
+      pool.query(
+        `Select * from participants where name like '%${req.query?.name}%'`,
+        (err, data) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          res.json(data);
+        }
+      );
+    } else {
+      pool.query("SELECT * FROM participants", (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        res.json(data);
+      });
+    }
   });
 
   server.all("*", (req, res) => handle(req, res));
