@@ -1,6 +1,7 @@
 import express from "express";
 import next from "next";
 import mysql from "mysql";
+import bodyParser from "body-parser";
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
@@ -32,12 +33,58 @@ const pool = mysql.createPool({
   debug: false,
 });
 
+const jsonParser = bodyParser.json();
+
 app.prepare().then(() => {
   const server = express();
   server.use(express.static("_next"));
   server.use(express.static("../pages"));
   server.all("/_next/*", (req, res) => handle(req, res));
 
+  // CRUD
+  // Create user
+  server.post(
+    "/users",
+    jsonParser,
+    (req: { body: { name: string; age: number } }, res) => {
+      pool.query(
+        `INSERT INTO participants (name, age) VALUES ("${req.body?.name}", "${req.body?.age}");`,
+        (err: any, data: any) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          res.json(data);
+        }
+      );
+    }
+  );
+
+  // Update user
+  server.post(
+    "/users/:id",
+    jsonParser,
+    (
+      req: { params: { id: number }; body: { name: string; age: number } },
+      res
+    ) => {
+      console.log(
+        `UPDATE participants SET name='${req.body?.name}', age='${req.body?.age}' WHERE id=${req.params?.id};`
+      );
+      pool.query(
+        `UPDATE participants SET name='${req.body?.name}', age='${req.body?.age}' WHERE id=${req.params?.id};`,
+        (err: any, data: any) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          res.json(data);
+        }
+      );
+    }
+  );
+
+  // Get user by id
   server.get("/users/:id", (req: { params: { id: number } }, res) => {
     pool.query(
       `Select * from participants where id = ${req.params?.id}`,
@@ -51,6 +98,7 @@ app.prepare().then(() => {
     );
   });
 
+  // Get users
   server.get("/users", (req: { query: { name: string } }, res) => {
     if (req.query?.name) {
       pool.query(
