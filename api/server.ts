@@ -1,14 +1,13 @@
-// server.js
-const next = require("next");
-const express = require("express");
+import express from "express";
+import next from "next";
+import mysql from "mysql";
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
-const port = process.env.PORT || 3000;
+const port: number = Number(process.env.PORT) || 3000;
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
-const mysql = require("mysql");
 
 if (dev) {
   require("dotenv").config();
@@ -29,7 +28,7 @@ const pool = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB,
-  port: process.env.DB_PORT,
+  port: Number(process.env.DB_PORT),
   debug: false,
 });
 
@@ -39,10 +38,10 @@ app.prepare().then(() => {
   server.use(express.static("../pages"));
   server.all("/_next/*", (req, res) => handle(req, res));
 
-  server.get("/users/:id", (req, res) => {
+  server.get("/users/:id", (req: { params: { id: number } }, res) => {
     pool.query(
       `Select * from participants where id = ${req.params?.id}`,
-      (err, data) => {
+      (err: any, data: any) => {
         if (err) {
           console.error(err);
           return;
@@ -52,11 +51,11 @@ app.prepare().then(() => {
     );
   });
 
-  server.get("/users", (req, res) => {
+  server.get("/users", (req: { query: { name: string } }, res) => {
     if (req.query?.name) {
       pool.query(
         `Select * from participants where name like '%${req.query?.name}%'`,
-        (err, data) => {
+        (err: any, data: any) => {
           if (err) {
             console.error(err);
             return;
@@ -65,7 +64,7 @@ app.prepare().then(() => {
         }
       );
     } else {
-      pool.query("SELECT * FROM participants", (err, data) => {
+      pool.query("SELECT * FROM participants", (err: any, data: any) => {
         if (err) {
           console.error(err);
           return;

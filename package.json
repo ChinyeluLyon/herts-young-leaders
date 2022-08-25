@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node ./api/server.js",
+    "dev": "ts-node ./api/server.ts",
     "dev_old": "next dev",
-    "start": "NODE_ENV=production node ./api/server.js",
+    "start": "NODE_ENV=production ts-node ./api/server.ts",
     "start_old": "next start",
     "build": "next build",
     "lint": "next lint"
@@ -26,10 +26,12 @@
     "next": "12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "@types/mysql": "^2.15.21",
     "@types/node": "18.7.2",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
