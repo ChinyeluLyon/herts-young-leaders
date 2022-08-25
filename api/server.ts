@@ -102,7 +102,7 @@ app.prepare().then(() => {
   server.get("/users", (req: { query: { name: string } }, res) => {
     if (req.query?.name) {
       pool.query(
-        `Select * from participants where name like '%${req.query?.name}%'`,
+        `Select * from participants where name like '${req.query?.name}%'`,
         (err: any, data: any) => {
           if (err) {
             console.error(err);
