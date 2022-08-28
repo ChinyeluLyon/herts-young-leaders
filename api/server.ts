@@ -2,6 +2,7 @@ import express from "express";
 import next from "next";
 import mysql from "mysql";
 import bodyParser from "body-parser";
+import { Sequelize, DataTypes, Op } from "sequelize";
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
@@ -13,6 +14,55 @@ const handle = app.getRequestHandler();
 if (dev) {
   require("dotenv").config();
 }
+
+const sequelize = new Sequelize(
+  process.env.DB || "",
+  process.env.DB_USER || "",
+  process.env.DB_PASSWORD || "",
+  {
+    host: process.env.DB_HOST || "",
+    dialect: "mysql",
+  }
+);
+
+type User = {
+  id: number;
+  created_at: string;
+  name: string;
+  age: number;
+  am: number;
+  pm: number;
+};
+
+const ParticipantModel = sequelize.define(
+  "participants",
+  {
+    id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      primaryKey: true,
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    age: {
+      type: DataTypes.NUMBER,
+      allowNull: false,
+    },
+    am: {
+      type: DataTypes.NUMBER,
+    },
+    pm: {
+      type: DataTypes.NUMBER,
+    },
+  },
+  { underscored: true, timestamps: false }
+);
 
 console.log("\ndev: ", dev);
 console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
@@ -35,7 +85,14 @@ const pool = mysql.createPool({
 
 const jsonParser = bodyParser.json();
 
-app.prepare().then(() => {
+app.prepare().then(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Connection has been established successfully.");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
+
   const server = express();
   server.use(express.static("_next"));
   server.use(express.static("../pages"));
@@ -43,7 +100,7 @@ app.prepare().then(() => {
 
   // CRUD
   // Create user
-  server.post("/users", jsonParser, (req: UserPostRequest, res) => {
+  server.post("/users", jsonParser, (req: ParticipantPostRequest, res) => {
     const errorMessage: Array<string> = [];
     if (!req.body) {
       errorMessage.push("Error: Invalid body");
@@ -70,34 +127,38 @@ app.prepare().then(() => {
   });
 
   // Update user
-  server.post("/users/:id", jsonParser, (req: UserUpdateRequest, res) => {
-    const errorMessage: Array<string> = [];
-    if (!req.params) {
-      errorMessage.push("Error: Invalid params");
-    }
-    if (!req.params.id) {
-      errorMessage.push("Error: Needs an id");
-    }
-    if (errorMessage.length > 0) {
-      res.status(400).send(errorMessage.join("\n"));
-    }
-
-    pool.query(
-      `UPDATE participants SET name='${req.body?.name}', age='${req.body?.age}' WHERE id=${req.params?.id};`,
-      (err: any, data: any) => {
-        if (err) {
-          res.status(500).send(err);
-        }
-        if (data?.changedRows === 0) {
-          res.send("No user with that id");
-        }
-        res.json(data);
+  server.post(
+    "/users/:id",
+    jsonParser,
+    (req: ParticipantUpdateRequest, res) => {
+      const errorMessage: Array<string> = [];
+      if (!req.params) {
+        errorMessage.push("Error: Invalid params");
       }
-    );
-  });
+      if (!req.params.id) {
+        errorMessage.push("Error: Needs an id");
+      }
+      if (errorMessage.length > 0) {
+        res.status(400).send(errorMessage.join("\n"));
+      }
+
+      pool.query(
+        `UPDATE participants SET name='${req.body?.name}', age='${req.body?.age}' WHERE id=${req.params?.id};`,
+        (err: any, data: any) => {
+          if (err) {
+            res.status(500).send(err);
+          }
+          if (data?.changedRows === 0) {
+            res.send("No user with that id");
+          }
+          res.json(data);
+        }
+      );
+    }
+  );
 
   // Get user by id
-  server.get("/users/:id", (req: UserRequestById, res) => {
+  server.get("/users/:id", (req: ParticipantRequestById, res) => {
     const errorMessage: Array<string> = [];
     if (!req.params) {
       errorMessage.push("Error: Invalid params");
@@ -122,28 +183,60 @@ app.prepare().then(() => {
   });
 
   // Get users
-  server.get("/users", (req: UserRequest, res) => {
-    let queryString = "SELECT * FROM participants";
-    if (req.query) {
-      let extraQuery = "";
-      if (req.query.name) {
-        extraQuery = `where name like '${req.query?.name}%'`;
-      }
-      if (req.query.age) {
-        const test = req.query.name ? `${extraQuery} AND ` : "where ";
-        extraQuery = `${test}age = ${req.query?.age}`;
-      }
-      queryString = `${queryString} ${extraQuery}`;
-    }
-    console.log(queryString);
+  server.get("/users", async (req: ParticipantRequest, res) => {
+    try {
+      if (req.query) {
+        let tempParams: {
+          name?: any;
+          age?: number | undefined;
+        } = req.query;
 
-    pool.query(queryString, (err: any, data: User) => {
-      if (err) {
-        res.status(500).send(err);
+        if (tempParams.name) {
+          tempParams = {
+            ...tempParams,
+            name: {
+              [Op.like]: `${req.query.name}%`,
+            },
+          };
+        }
+
+        const params = {
+          where: tempParams,
+        };
+
+        const ptcpnt = await ParticipantModel.findAll(params);
+        res.json(ptcpnt);
+      } else {
+        const ptcpnt = await ParticipantModel.findAll();
+        res.json(ptcpnt);
       }
-      res.json(data);
-    });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
+    }
   });
+  // server.get("/users", (req: ParticipantRequest, res) => {
+  //   let queryString = "SELECT * FROM participants";
+  //   if (req.query) {
+  //     let extraQuery = "";
+  //     if (req.query.name) {
+  //       extraQuery = `where name like '${req.query?.name}%'`;
+  //     }
+  //     if (req.query.age) {
+  //       const test = req.query.name ? `${extraQuery} AND ` : "where ";
+  //       extraQuery = `${test}age = ${req.query?.age}`;
+  //     }
+  //     queryString = `${queryString} ${extraQuery}`;
+  //   }
+  //   console.log(queryString);
+
+  //   pool.query(queryString, (err: any, data: User) => {
+  //     if (err) {
+  //       res.status(500).send(err);
+  //     }
+  //     res.json(data);
+  //   });
+  // });
 
   server.all("*", (req, res) => handle(req, res));
 
