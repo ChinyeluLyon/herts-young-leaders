@@ -11,19 +11,23 @@ type HoneInProps = {
 
 const HoneIn = ({ isOpen }: HoneInProps) => {
   const [name, setName] = useState("");
-  const [age, setAge] = useState<number>();
+  const [minAge, setMinAge] = useState<number>();
+  const [maxAge, setMaxAge] = useState<number>();
   const [participantData, setParticipantData] = useState<Array<Participant>>();
 
   const handleName = (n: string) => {
     setName(n);
   };
-
-  const handleAge = (a: number) => {
-    setAge(a);
+  const handleMinAge = (a: number) => {
+    setMinAge(a);
+  };
+  const handleMaxAge = (a: number) => {
+    setMaxAge(a);
   };
 
   const debounceSearchName = useCallback(debounce(handleName, 1000), []);
-  const debounceSearchAge = useCallback(debounce(handleAge, 1000), []);
+  const debounceSearchMinAge = useCallback(debounce(handleMinAge, 1000), []);
+  const debounceSearchMaxAge = useCallback(debounce(handleMaxAge, 1000), []);
 
   const { fetch } = useGetParticipants();
 
@@ -35,9 +39,12 @@ const HoneIn = ({ isOpen }: HoneInProps) => {
         const tempParams = { name: name };
         fetchParams = tempParams;
       }
-
-      if (age) {
-        const tempParams = { ...fetchParams, age: age };
+      if (minAge) {
+        const tempParams = { ...fetchParams, minAge: minAge };
+        fetchParams = tempParams;
+      }
+      if (minAge) {
+        const tempParams = { ...fetchParams, maxAge: maxAge };
         fetchParams = tempParams;
       }
 
@@ -47,7 +54,7 @@ const HoneIn = ({ isOpen }: HoneInProps) => {
     if (isOpen) {
       getData();
     }
-  }, [isOpen, name, age]);
+  }, [isOpen, name, minAge, maxAge]);
 
   return (
     <S.HoneIn>
@@ -57,14 +64,22 @@ const HoneIn = ({ isOpen }: HoneInProps) => {
           <S.InputLabel>Age:</S.InputLabel>
           <S.Input
             onChange={(ev) => {
-              debounceSearchAge(ev.target.valueAsNumber);
+              debounceSearchMinAge(ev.target.valueAsNumber);
             }}
             type="number"
             min={2}
             max={15}
             placeholder="Min"
           />
-          <S.Input type="number" min={2} max={15} placeholder="Max" />
+          <S.Input
+            onChange={(ev) => {
+              debounceSearchMaxAge(ev.target.valueAsNumber);
+            }}
+            type="number"
+            min={2}
+            max={15}
+            placeholder="Max"
+          />
         </S.MinMaxRow>
         <S.MinMaxRow>
           <S.InputLabel>AM:</S.InputLabel>

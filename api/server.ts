@@ -186,16 +186,40 @@ app.prepare().then(async () => {
   server.get("/users", async (req: ParticipantRequest, res) => {
     try {
       if (req.query) {
-        let tempParams: {
-          name?: any;
-          age?: number | undefined;
-        } = req.query;
+        let tempParams = {};
 
-        if (tempParams.name) {
+        if (req.query.name) {
           tempParams = {
             ...tempParams,
             name: {
               [Op.like]: `${req.query.name}%`,
+            },
+          };
+        }
+
+        if (req.query.minAge && !req.query.maxAge) {
+          tempParams = {
+            ...tempParams,
+            age: {
+              [Op.gte]: req.query.minAge,
+            },
+          };
+        }
+
+        if (!req.query.minAge && req.query.maxAge) {
+          tempParams = {
+            ...tempParams,
+            age: {
+              [Op.lte]: req.query.maxAge,
+            },
+          };
+        }
+
+        if (req.query.minAge && req.query.maxAge) {
+          tempParams = {
+            ...tempParams,
+            age: {
+              [Op.between]: [req.query.minAge, req.query.maxAge],
             },
           };
         }
@@ -215,28 +239,6 @@ app.prepare().then(async () => {
       res.status(500).send(error);
     }
   });
-  // server.get("/users", (req: ParticipantRequest, res) => {
-  //   let queryString = "SELECT * FROM participants";
-  //   if (req.query) {
-  //     let extraQuery = "";
-  //     if (req.query.name) {
-  //       extraQuery = `where name like '${req.query?.name}%'`;
-  //     }
-  //     if (req.query.age) {
-  //       const test = req.query.name ? `${extraQuery} AND ` : "where ";
-  //       extraQuery = `${test}age = ${req.query?.age}`;
-  //     }
-  //     queryString = `${queryString} ${extraQuery}`;
-  //   }
-  //   console.log(queryString);
-
-  //   pool.query(queryString, (err: any, data: User) => {
-  //     if (err) {
-  //       res.status(500).send(err);
-  //     }
-  //     res.json(data);
-  //   });
-  // });
 
   server.all("*", (req, res) => handle(req, res));
 

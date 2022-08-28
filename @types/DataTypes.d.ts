@@ -15,4 +15,6 @@ type ParticipantUpdateRequest = {
 
 type ParticipantRequestById = { params: { id: number } };
 
-type ParticipantRequest = { query?: { name?: string; age?: number } };
+type ParticipantRequest = {
+  query?: { name?: string; minAge?: number; maxAge?: number };
+};

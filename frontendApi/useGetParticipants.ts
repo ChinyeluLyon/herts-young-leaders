@@ -6,7 +6,8 @@ const slug = "/users/";
 type getUsersProps = {
   id?: string;
   name?: string;
-  age?: string;
+  minAge?: number;
+  maxAge?: number;
 };
 
 const useGetParticipants = () => {
@@ -19,11 +20,11 @@ const useGetParticipants = () => {
     }
   );
 
-  const fetch = ({ id, name, age }: getUsersProps) => {
+  const fetch = ({ id, name, minAge, maxAge }: getUsersProps) => {
     const queryConfig: AxiosRequestConfig = {
       method: "GET",
       url: `${slug}${id ? id : ""}`,
-      params: { name, age },
+      params: { name, minAge, maxAge },
     };
     return refetch(queryConfig);
   };
