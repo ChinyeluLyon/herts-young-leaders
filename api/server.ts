@@ -43,55 +43,77 @@ app.prepare().then(() => {
 
   // CRUD
   // Create user
-  server.post(
-    "/users",
-    jsonParser,
-    (req: { body: { name: string; age: number } }, res) => {
-      pool.query(
-        `INSERT INTO participants (name, age) VALUES ("${req.body?.name}", "${req.body?.age}");`,
-        (err: any, data: any) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          res.json(data);
-        }
-      );
+  server.post("/users", jsonParser, (req: UserPostRequest, res) => {
+    const errorMessage: Array<string> = [];
+    if (!req.body) {
+      errorMessage.push("Error: Invalid body");
     }
-  );
+    if (!req.body.age) {
+      errorMessage.push("Error: Needs an age");
+    }
+    if (!req.body.name) {
+      errorMessage.push("Error: Needs a name");
+    }
+    if (errorMessage.length > 0) {
+      res.status(400).send(errorMessage.join("\n"));
+    }
+
+    pool.query(
+      `INSERT INTO participants (name, age) VALUES ("${req.body.name}", "${req.body.age}");`,
+      (err: any, data: any) => {
+        if (err) {
+          res.status(500).send(err);
+        }
+        res.json(data);
+      }
+    );
+  });
 
   // Update user
-  server.post(
-    "/users/:id",
-    jsonParser,
-    (
-      req: { params: { id: number }; body: { name: string; age: number } },
-      res
-    ) => {
-      console.log(
-        `UPDATE participants SET name='${req.body?.name}', age='${req.body?.age}' WHERE id=${req.params?.id};`
-      );
-      pool.query(
-        `UPDATE participants SET name='${req.body?.name}', age='${req.body?.age}' WHERE id=${req.params?.id};`,
-        (err: any, data: any) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          res.json(data);
-        }
-      );
+  server.post("/users/:id", jsonParser, (req: UserUpdateRequest, res) => {
+    const errorMessage: Array<string> = [];
+    if (!req.params) {
+      errorMessage.push("Error: Invalid params");
     }
-  );
+    if (!req.params.id) {
+      errorMessage.push("Error: Needs an id");
+    }
+    if (errorMessage.length > 0) {
+      res.status(400).send(errorMessage.join("\n"));
+    }
+
+    pool.query(
+      `UPDATE participants SET name='${req.body?.name}', age='${req.body?.age}' WHERE id=${req.params?.id};`,
+      (err: any, data: any) => {
+        if (err) {
+          res.status(500).send(err);
+        }
+        if (data?.changedRows === 0) {
+          res.send("No user with that id");
+        }
+        res.json(data);
+      }
+    );
+  });
 
   // Get user by id
-  server.get("/users/:id", (req: { params: { id: number } }, res) => {
+  server.get("/users/:id", (req: UserRequestById, res) => {
+    const errorMessage: Array<string> = [];
+    if (!req.params) {
+      errorMessage.push("Error: Invalid params");
+    }
+    if (!req.params.id) {
+      errorMessage.push("Error: Needs an id");
+    }
+    if (errorMessage.length > 0) {
+      res.status(400).send(errorMessage.join("\n"));
+    }
+
     pool.query(
       `Select * from participants where id = ${req.params?.id}`,
       (err: any, data: any) => {
         if (err) {
-          console.error(err);
-          return;
+          res.status(500).send(err);
         }
         res.json(data);
       }
@@ -99,23 +121,22 @@ app.prepare().then(() => {
   });
 
   // Get users
-  server.get("/users", (req: { query: { name: string } }, res) => {
+  server.get("/users", (req: UserRequestByName, res) => {
     if (req.query?.name) {
       pool.query(
         `Select * from participants where name like '${req.query?.name}%'`,
-        (err: any, data: any) => {
+        (err: any, data: User) => {
           if (err) {
-            console.error(err);
-            return;
+            res.status(500).send(err);
           }
+
           res.json(data);
         }
       );
     } else {
-      pool.query("SELECT * FROM participants", (err: any, data: any) => {
+      pool.query("SELECT * FROM participants", (err: any, data: User) => {
         if (err) {
-          console.error(err);
-          return;
+          res.status(500).send(err);
         }
         res.json(data);
       });

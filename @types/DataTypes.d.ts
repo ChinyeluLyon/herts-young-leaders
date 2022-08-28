@@ -6,3 +6,13 @@ type User = {
   am: number;
   pm: number;
 };
+
+type UserPostRequest = { body: { name: string; age: number } };
+
+type UserUpdateRequest = {
+  params: { id: number };
+} & UserPostRequest;
+
+type UserRequestById = { params: { id: number } };
+
+type UserRequestByName = { query: { name: string } };
