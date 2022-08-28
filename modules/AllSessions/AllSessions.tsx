@@ -13,7 +13,6 @@ const AllSessions = ({isOpen}:AllSessionsProps) => {
         <Button>Next</Button>
       </div>
       <ParticipantTable isOpen={isOpen} />
-      <Export />
     </div>
   );
 };

@@ -1,13 +1,17 @@
 import { faFileExport } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
+import CsvDownload from "react-json-to-csv";
 
-const Export = () => {
+type ExportProps = {
+  data: Array<User> | User;
+};
+const Export = ({ data }: ExportProps) => {
   return (
     <div>
-      <Button>
+      <CsvDownload data={data}>
         <FontAwesomeIcon icon={faFileExport} size="2x" />
-      </Button>
+      </CsvDownload>
     </div>
   );
 };

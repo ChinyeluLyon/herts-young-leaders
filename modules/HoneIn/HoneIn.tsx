@@ -1,5 +1,4 @@
 import { Button, Input } from "@mui/material";
-import Export from "../Export/Export";
 import ParticipantTable from "../ParticipantTable/ParticipantTable";
 import * as S from "./HoneIn.styles";
 
@@ -33,7 +32,7 @@ const HoneIn = ({ isOpen }: HoneInProps) => {
       <Button>Search</Button>
 
       <ParticipantTable isOpen={isOpen} />
-      <Export />
+      
     </S.HoneIn>
   );
 };
