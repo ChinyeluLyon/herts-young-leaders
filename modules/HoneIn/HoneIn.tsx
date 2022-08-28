@@ -34,7 +34,6 @@ const HoneIn = ({ isOpen }: HoneInProps) => {
   useEffect(() => {
     const getData = async () => {
       let fetchParams = {};
-
       if (name) {
         const tempParams = { name: name };
         fetchParams = tempParams;
@@ -43,7 +42,7 @@ const HoneIn = ({ isOpen }: HoneInProps) => {
         const tempParams = { ...fetchParams, minAge: minAge };
         fetchParams = tempParams;
       }
-      if (minAge) {
+      if (maxAge) {
         const tempParams = { ...fetchParams, maxAge: maxAge };
         fetchParams = tempParams;
       }
