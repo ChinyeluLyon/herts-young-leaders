@@ -15,4 +15,4 @@ type UserUpdateRequest = {
 
 type UserRequestById = { params: { id: number } };
 
-type UserRequestByName = { query: { name: string } };
+type UserRequest = { query?: { name?: string; age?: number } };

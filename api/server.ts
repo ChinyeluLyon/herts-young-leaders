@@ -118,29 +118,31 @@ app.prepare().then(() => {
         res.json(data);
       }
     );
+    // res.json([{ devTest: req.params }]);
   });
 
   // Get users
-  server.get("/users", (req: UserRequestByName, res) => {
-    if (req.query?.name) {
-      pool.query(
-        `Select * from participants where name like '${req.query?.name}%'`,
-        (err: any, data: User) => {
-          if (err) {
-            res.status(500).send(err);
-          }
-
-          res.json(data);
-        }
-      );
-    } else {
-      pool.query("SELECT * FROM participants", (err: any, data: User) => {
-        if (err) {
-          res.status(500).send(err);
-        }
-        res.json(data);
-      });
+  server.get("/users", (req: UserRequest, res) => {
+    let queryString = "SELECT * FROM participants";
+    if (req.query) {
+      let extraQuery = "";
+      if (req.query.name) {
+        extraQuery = `where name like '${req.query?.name}%'`;
+      }
+      if (req.query.age) {
+        const test = req.query.name ? `${extraQuery} AND ` : "where ";
+        extraQuery = `${test}age = ${req.query?.age}`;
+      }
+      queryString = `${queryString} ${extraQuery}`;
     }
+    console.log(queryString);
+
+    pool.query(queryString, (err: any, data: User) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.json(data);
+    });
   });
 
   server.all("*", (req, res) => handle(req, res));

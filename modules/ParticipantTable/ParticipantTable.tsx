@@ -7,38 +7,13 @@ import {
   TableCell,
   TableBody,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import useGetUsers from "../../frontendApi/useGetUsers";
 import Export from "../Export/Export";
 
 type ParticipantTableProps = {
-  isOpen: boolean;
+  data: Array<User>;
 };
 
-const ParticipantTable = ({ isOpen }: ParticipantTableProps) => {
-  const createData = (
-    name: string,
-    calories: number,
-    fat: number,
-    carbs: number,
-    protein: number
-  ) => {
-    return { name, calories, fat, carbs, protein };
-  };
-
-  const { refetch } = useGetUsers();
-  const [userData, setUserData] = useState<Array<User>>();
-
-  useEffect(() => {
-    const getData = async () => {
-      const { data } = await refetch();
-      setUserData(data);
-    };
-    if (isOpen) {
-      getData();
-    }
-  }, [isOpen, refetch]);
-
+const ParticipantTable = ({ data }: ParticipantTableProps) => {
   return (
     <>
       <TableContainer component={Paper}>
@@ -52,7 +27,7 @@ const ParticipantTable = ({ isOpen }: ParticipantTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {userData?.map((row) => (
+            {data?.map((row) => (
               <TableRow
                 key={row.name}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -68,7 +43,7 @@ const ParticipantTable = ({ isOpen }: ParticipantTableProps) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Export data={userData || []} />
+      <Export data={data || []} />
     </>
   );
 };
