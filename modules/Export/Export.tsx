@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import CsvDownload from "react-json-to-csv";
 
 type ExportProps = {
-  data: Array<User> | User;
+  data: Array<Participant> | Participant;
 };
 const Export = ({ data }: ExportProps) => {
   return (

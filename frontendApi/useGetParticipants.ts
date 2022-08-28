@@ -9,7 +9,7 @@ type getUsersProps = {
   age?: string;
 };
 
-const useGetUsers = () => {
+const useGetParticipants = () => {
   const params = {};
 
   const [{ data, loading, error }, refetch] = useAxios(
@@ -31,4 +31,4 @@ const useGetUsers = () => {
   return { data, loading, error, fetch };
 };
 
-export default useGetUsers;
+export default useGetParticipants;

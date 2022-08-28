@@ -1,4 +1,4 @@
-type User = {
+type Participant = {
   id: number;
   created_at: string;
   name: string;
@@ -7,12 +7,12 @@ type User = {
   pm: number;
 };
 
-type UserPostRequest = { body: { name: string; age: number } };
+type ParticipantPostRequest = { body: { name: string; age: number } };
 
-type UserUpdateRequest = {
+type ParticipantUpdateRequest = {
   params: { id: number };
-} & UserPostRequest;
+} & ParticipantPostRequest;
 
-type UserRequestById = { params: { id: number } };
+type ParticipantRequestById = { params: { id: number } };
 
-type UserRequest = { query?: { name?: string; age?: number } };
+type ParticipantRequest = { query?: { name?: string; age?: number } };

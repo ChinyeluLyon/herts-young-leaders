@@ -10,7 +10,7 @@ import {
 import Export from "../Export/Export";
 
 type ParticipantTableProps = {
-  data: Array<User>;
+  data: Array<Participant>;
 };
 
 const ParticipantTable = ({ data }: ParticipantTableProps) => {

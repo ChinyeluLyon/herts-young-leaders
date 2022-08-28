@@ -3,7 +3,7 @@ import ParticipantTable from "../ParticipantTable/ParticipantTable";
 import * as S from "./HoneIn.styles";
 import debounce from "lodash.debounce";
 import { useCallback, useEffect, useState } from "react";
-import useGetUsers from "../../frontendApi/useGetUsers";
+import useGetParticipants from "../../frontendApi/useGetParticipants";
 
 type HoneInProps = {
   isOpen: boolean;
@@ -12,7 +12,7 @@ type HoneInProps = {
 const HoneIn = ({ isOpen }: HoneInProps) => {
   const [name, setName] = useState("");
   const [age, setAge] = useState<number>();
-  const [userData, setUserData] = useState<Array<User>>();
+  const [participantData, setParticipantData] = useState<Array<Participant>>();
 
   const handleName = (n: string) => {
     setName(n);
@@ -25,7 +25,7 @@ const HoneIn = ({ isOpen }: HoneInProps) => {
   const debounceSearchName = useCallback(debounce(handleName, 1000), []);
   const debounceSearchAge = useCallback(debounce(handleAge, 1000), []);
 
-  const { fetch } = useGetUsers();
+  const { fetch } = useGetParticipants();
 
   useEffect(() => {
     const getData = async () => {
@@ -37,12 +37,12 @@ const HoneIn = ({ isOpen }: HoneInProps) => {
       }
 
       if (age) {
-        const tempParams = {...fetchParams, age: age };
+        const tempParams = { ...fetchParams, age: age };
         fetchParams = tempParams;
       }
 
       const { data } = await fetch(fetchParams);
-      setUserData(data || []);
+      setParticipantData(data || []);
     };
     if (isOpen) {
       getData();
@@ -83,7 +83,7 @@ const HoneIn = ({ isOpen }: HoneInProps) => {
         }}
         placeholder="By Name"
       />
-      <ParticipantTable data={userData || []} />
+      <ParticipantTable data={participantData || []} />
     </S.HoneIn>
   );
 };
